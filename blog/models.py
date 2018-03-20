@@ -37,6 +37,7 @@ class Post(models.Model):
 
     # 摘要
     excerpt = models.CharField(max_length=200, blank=True, verbose_name='摘要')
+    views = models.PositiveIntegerField(default=0)
 
     # 分类与标签
     category = models.ForeignKey(Category, verbose_name='分类')
@@ -47,4 +48,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
