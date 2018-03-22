@@ -7,6 +7,7 @@ from django import template
 from .models import Post, Category
 from comments.forms import CommentForm
 import markdown
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -19,8 +20,39 @@ def hello(request):
 
 
 def index(request):
+    #page_obj = {}
     list = Post.objects.all().order_by('-create_time')
-    return render(request, 'blog/index.html', context={'post_list': list})
+    paginator = Paginator(list, 3)
+
+    if list.count > 3:
+        is_page = True
+    else:
+        is_page = False
+
+    page = request.GET.get('page')
+    try:
+        list_page = paginator.page(page)
+    except PageNotAnInteger:
+        list_page = paginator.page(1)
+    except EmptyPage:
+        list_page = paginator.page(paginator.num_pages)
+    '''
+    if list_page.has_previous:
+        page_obj['previous'] = True
+    else:
+        page_obj['previous'] = False
+
+    if list_page.has_next:
+        page_obj['next'] = True
+    else:
+        page_obj['next'] = False
+
+    page_obj['previous_page_number'] = list_page.previous_page_number
+    print list_page.has_previous
+    print list_page.has_next
+    '''
+    return render(request, 'blog/index.html', context={'post_list': list_page, 
+                                                       "is_paginated": is_page})
 
 
 def archives(request, year, month):
