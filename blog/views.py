@@ -8,6 +8,7 @@ from .models import Post, Category
 from comments.forms import CommentForm
 import markdown
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 # Create your views here.
@@ -114,5 +115,24 @@ def detail(request, pk):
 
     context = {'post': post, 'form': form, 'comment_list': comment_list}
     return render(request, 'blog/detail.html', context=context)
+
+
+def search(request):
+    q = request.GET.get('q')
+    err_message = ''
+
+    if not q:
+        err_message = "请输入关键词"
+        return render(request, 'blog/index.html', context={"err_message": err_message})
+
+    list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    if not list:
+        err_message = "没有搜索到相关内容"
+    return render(request, 'blog/index.html', context={"err_message": err_message,
+                                                       "post_list": list})
+
+
+
+
 
 
