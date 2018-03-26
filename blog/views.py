@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
 # from django.http import HttpResponse
 from django import template
-from .models import Post, Category
+from .models import Post, Category, Tag
 from comments.forms import CommentForm
 import markdown
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -25,7 +25,7 @@ def index(request):
     list = Post.objects.all().order_by('-create_time')
     paginator = Paginator(list, 6)
 
-    if list.count > 3:
+    if list.count > 6:
         is_page = True
     else:
         is_page = False
@@ -61,7 +61,7 @@ def archives(request, year, month):
                                create_time__month=month).order_by('-create_time')
     paginator = Paginator(list, 6)
 
-    if list.count > 3:
+    if list.count > 6:
         is_page = True
     else:
         is_page = False
@@ -85,7 +85,29 @@ def category(request, pk):
 
     paginator = Paginator(list, 6)
 
-    if list.count > 3:
+    if list.count > 6:
+        is_page = True
+    else:
+        is_page = False
+
+    page = request.GET.get('page')
+    try:
+        list_page = paginator.page(page)
+    except PageNotAnInteger:
+        list_page = paginator.page(1)
+    except EmptyPage:
+        list_page = paginator.page(paginator.num_pages)
+    return render(request, 'blog/index.html', context={'post_list': list_page,
+                                                    "is_paginated": is_page})
+
+
+def tags(request, pk):
+    tagname = get_object_or_404(Tag, pk=pk)
+    list = Post.objects.filter(tags=tagname).order_by('-create_time')
+
+    paginator = Paginator(list, 6)
+
+    if list.count > 6:
         is_page = True
     else:
         is_page = False
