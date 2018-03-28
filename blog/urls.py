@@ -2,11 +2,12 @@
 
 
 from django.conf.urls import url
-from blog.views import hello, index, detail, archives, category, search, tags
+from blog.views import  contact, about, index, detail, archives, category, search, tags
 
 app_name = 'blog'
 urlpatterns = [
-    url(r'^hello$', hello),
+    url(r'^about.html$', about),
+    url(r'^contact.html$', contact),
     url(r'^$', index, name='index'),
     url(r'^index.html$', index, name='index'),
     url(r'^post/(?P<pk>[0-9]+)/$', detail, name='detail'),

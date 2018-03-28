@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponse
 # from django.http import HttpResponse
 from django import template
 from .models import Post, Category, Tag
@@ -12,12 +12,16 @@ from django.db.models import Q
 
 
 # Create your views here.
-def hello(request):
+def about(request):
     # return HttpResponse("欢迎访问我的博客")
     # text = template.Context({'title': '我的博客首页', 'welcome': '欢迎访问我的博客！！！'})
-    return render(request, 'blog/hello.html', context={
-                             'title': '我的博客首页', 
-                             'welcome': '欢迎访问我的博客！！！'})
+    return render(request, 'blog/about.html')
+
+
+def contact(request):
+    return HttpResponse("<H2>暂无联系</H2>")
+    # text = template.Context({'title': '我的博客首页', 'welcome': '欢迎访问我的博客！！！'})
+    # return render_(request, '<p>暂无联系</p>')
 
 
 def index(request):
