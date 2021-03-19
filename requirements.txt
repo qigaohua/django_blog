@@ -11,7 +11,7 @@ enum34==1.1.6
 flake8==3.5.0
 idna==2.6
 iniparse==0.4
-Jinja2==2.9.6
+Jinja2==2.11.3
 jsonpatch==1.16
 jsonpointer==1.12
 Markdown==2.6.9
