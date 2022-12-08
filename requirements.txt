@@ -1,5 +1,5 @@
 backports.ssl-match-hostname==3.4.0.2
-certifi==2017.7.27.1
+certifi==2022.12.7
 chardet==3.0.4
 Cheetah==2.4.4
 cloud-init==0.7.6
